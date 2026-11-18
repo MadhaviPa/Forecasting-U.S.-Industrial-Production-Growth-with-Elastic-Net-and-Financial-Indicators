@@ -1,0 +1,12 @@
+.Rhistory
+.RData
+.Rproj.user/
+.Renviron
+.env
+.DS_Store
+results/details/
+results/generated/
+data/processed/*.csv
+data/processed/*.rds
+data/raw/*.csv
+!data/raw/README.md
