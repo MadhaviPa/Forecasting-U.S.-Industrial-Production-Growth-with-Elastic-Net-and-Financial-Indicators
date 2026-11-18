@@ -36,9 +36,6 @@ forecasting-us-industrial-production/
 │   ├── 05_quantile_elastic_net.R
 │   ├── 06_evaluation.R
 │   └── original_analysis_reference.R
-├── data/
-│   ├── raw/
-│   └── processed/
 ├── figures/
 │   ├── industrial_production_growth.png
 │   ├── variable_selection_frequency.png
