@@ -60,11 +60,11 @@ The script defaults to `FORECAST_END_DATE=2026-06-30` to reflect the reported st
 
 ## Figures
 
-![Industrial production growth](figures/industrial_production_growth.png)
+![Industrial production growth](Figures/industrial_production_growth.png)
 
-![Variable selection frequency](figures/variable_selection_frequency.png)
+![Variable selection frequency](Figures/variable_selection_frequency.png)
 
-![Reported point-forecast results](figures/forecast_results.png)
+![Reported point-forecast results](Figures/forecast_results.png)
 
 ## Results provenance
 
