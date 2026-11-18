@@ -1,156 +1,87 @@
-# 📐 Statistics & Econometrics Portfolio | Madhavi Panchangum
+# Forecasting U.S. Industrial Production Growth
 
-> **Using mathematics, statistics, and econometric methods to understand data, quantify relationships, and support evidence-based decisions.**
+**Elastic Net forecasting with FRED-MD, daily S&P 500 returns, 10-year U.S. Treasury yields, and financial interaction terms.**
 
-Welcome to my **Statistics & Econometrics Portfolio!** 📊
+This repository contains the R analysis, seminar report, figures and published result tables for a 2026 econometrics project. It examines whether financial-market information improves out-of-sample forecasts of monthly U.S. industrial production growth beyond autoregressive and FRED-MD-based models.
 
-I'm **Madhavi Panchangum**, an M.Sc. Econometrics student with a background in Mathematics and Computer Science.
+## Research question
 
-This repository showcases my work in **statistical analysis, econometric modeling, regression, forecasting, and quantitative research** using real-world datasets.
+Do S&P 500 returns and 10-year Treasury yields, when used jointly through interaction terms, improve out-of-sample forecasts of U.S. industrial-production growth?
 
----
+- **Target:** 100 × monthly change in log industrial production (`INDPRO`).
+- **Horizon:** 1, 3, 6, 12 and 24 months.
+- **Estimation windows:** 120, 180 and 240 months (main comparison: 180 months).
+- **Point models:** AR(1) benchmark and Elastic Net models with expanding macroeconomic/financial information sets.
+- **Quantiles:** 0.05, 0.10, 0.25, 0.50, 0.75, 0.90, 0.95 (180-month window).
+- **Evaluation:** MSFE, Theil's U, Diebold–Mariano tests, quantile Pinball Loss and additional tests.
 
-## 🔬 Areas of Focus
+## Main findings from the submitted report
 
-* 📊 Statistical Analysis
-* 📈 Regression Modeling
-* ⏳ Time-Series Econometrics
-* 🎯 Quantile Regression
-* 🧮 Regularization
-* 📉 Forecast Evaluation
-* 🔍 Model Diagnostics
-* 💹 Economic & Financial Data
-* 🧠 Statistical Learning
+In the 180-month window, AR(1) has the lowest MSFE at 1, 3, 12 and 24 months. Elastic Net improves MSFE numerically at the 6-month horizon (2.135 vs. 2.243 for AR(1)), but the improvement is not statistically significant by the reported DM tests. The interaction term does not consistently improve point forecasting. In quantile forecasting, selected lower-tail gains occur — e.g., Q-EN-3 at the 6-month 5% quantile — but the reported DM tests do not establish significant superiority.
 
----
-
-## 🛠️ Toolkit
-
-**Languages**
-
-`R` • `Python` • `SQL`
-
-**Methods**
-
-`OLS` • `Regression` • `Quantile Regression` • `Elastic Net` • `PCA` • `Time-Series Models`
-
-**Evaluation**
-
-`RMSE` • `MAE` • `RMSFE` • `Quantile Loss` • `Pinball Loss` • `Diebold-Mariano Test`
-
----
-
-## 🚀 Project Areas
-
-### 📈 Regression Analysis
-
-Exploring relationships between variables using statistical regression models.
-
-Topics include:
-
-* Model estimation
-* Coefficient interpretation
-* Statistical significance
-* Residual analysis
-* Model diagnostics
-* Prediction
-
----
-
-### 🎯 Quantile Regression
-
-Going beyond conditional means to investigate how explanatory variables affect different parts of a distribution.
+## Repository structure
 
 ```text
-             Conditional Distribution
-                       │
-       ┌───────────────┼───────────────┐
-       ▼               ▼               ▼
-   Lower Tail        Median        Upper Tail
-       │               │               │
-       └───────────────┼───────────────┘
-                       ▼
-              Quantile Regression
+forecasting-us-industrial-production/
+├── README.md
+├── run_all.R
+├── report/
+│   ├── MP_FRED_report.pdf
+│   └── MP_FRED_presentation.pdf
+├── code/
+│   ├── 01_download_data.R
+│   ├── 02_preprocessing.R
+│   ├── 03_feature_engineering.R
+│   ├── 04_elastic_net.R
+│   ├── 05_quantile_elastic_net.R
+│   ├── 06_evaluation.R
+│   └── original_analysis_reference.R
+├── data/
+│   ├── raw/
+│   └── processed/
+├── figures/
+│   ├── industrial_production_growth.png
+│   ├── variable_selection_frequency.png
+│   └── forecast_results.png
+├── results/
+│   ├── msfe_results.csv
+│   ├── dm_results.csv
+│   └── quantile_results.csv
+└── packages.txt
 ```
 
----
+## Setup and running the analysis
 
-### 🧮 Regularization
+1. Install R and the packages in [`packages.txt`](packages.txt). `01_download_data.R` installs missing packages automatically.
+2. Download the appropriate **FRED-MD 2026-07 vintage** from the [Federal Reserve FRED-MD database](https://research.stlouisfed.org/econ/mccracken/fred-databases/) and save as `data/raw/2026-07-MD.csv`. This input file was not included in the uploaded source materials. Alternatively set the environment variable `FRED_MD_FILE` to its absolute path.
+3. Create a free [FRED API key](https://fred.stlouisfed.org/docs/api/api_key.html) and set it **in your local environment** as `FRED_API_KEY`. Do not publish the key on GitHub. For example, in an R session use `Sys.setenv(FRED_API_KEY = "YOUR_KEY")`.
+4. From the repository root run `Rscript run_all.R` (or `source("run_all.R")` within an R session). Internet access is required to download S&P 500 and Treasury series.
 
-Exploring techniques such as:
+The script defaults to `FORECAST_END_DATE=2026-06-30` to reflect the reported study period; change this environment variable to update the sample. Detailed analysis outputs go to `results/details/`, and freshly recalculated summary CSVs to `results/generated/`. The original multi-stage script is preserved in `code/original_analysis_reference.R` with sensitive local settings redacted.
 
-`Lasso` • `Ridge` • `Elastic Net`
+**Important:** The six R scripts represent consecutive stages of one R session and should be executed through `run_all.R`, not individually in fresh sessions. The full rolling analysis may require substantial compute time.
 
-with emphasis on high-dimensional datasets, variable selection, prediction and overfitting.
+## Figures
 
----
+![Industrial production growth](figures/industrial_production_growth.png)
 
-### 📊 Principal Component Analysis
+![Variable selection frequency](figures/variable_selection_frequency.png)
 
-Using PCA to reduce dimensionality and extract common information from large groups of correlated variables.
+![Reported point-forecast results](figures/forecast_results.png)
 
----
+## Results provenance
 
-### ⏳ Time-Series Econometrics
+The committed results CSVs transcribe **rounded values from the submitted report** (Tables 2, 3 and 5). They are provided for browsing and are **not claimed to be newly reproduced runs**. The quantile table lists only the winning model for each horizon/quantile combination; a full model-by-model table requires executing the R code. Plots are extracted from the report or derived from its published tables. Re-run with the intended vintage for reproducible output; data revisions and changes in external downloads can affect results.
 
-Exploring:
+## Data sources
 
-`AR` • `ARX` • `SARX` • `QAR` • `QARX`
+- [FRED-MD macroeconomic database](https://research.stlouisfed.org/econ/mccracken/fred-databases/)
+- [FRED 10-year Treasury yield (DGS10)](https://fred.stlouisfed.org/series/DGS10)
+- [Yahoo Finance S&P 500 (^GSPC)](https://finance.yahoo.com/quote/%5EGSPC/)
 
-with rolling and expanding-window evaluation.
+## Project documents
 
----
+- [Seminar report](report/MP_FRED_report.pdf)
+- [Project presentation](report/MP_FRED_presentation.pdf)
 
-## 🔬 Research Workflow
-
-```text
-Research Question
-       ↓
-Data Collection
-       ↓
-Data Cleaning
-       ↓
-Exploratory Analysis
-       ↓
-Model Specification
-       ↓
-Estimation
-       ↓
-Diagnostics
-       ↓
-Model Evaluation
-       ↓
-Interpretation
-       ↓
-Economic / Business Insight
-```
-
----
-
-## 📂 Repository Structure
-
-```text
-Statistics-Econometrics-Portfolio/
-│
-├── Regression/
-├── Quantile-Regression/
-├── Regularization/
-├── PCA/
-├── Time-Series/
-├── Statistical-Tests/
-└── README.md
-```
-
----
-
-## 🎯 Objective
-
-My goal is to combine **statistical theory with practical data analysis** and understand not only whether a model predicts well, but also **why relationships exist and how they can be interpreted**.
-
----
-
-## 🤝 Connect
-
-💼 LinkedIn: [Madhavi Panchangum](https://www.linkedin.com/in/madhavi-panchangum/)
-
-⭐ **Statistics gives us evidence. Econometrics gives that evidence economic meaning.**
+**Author:** Madhavi Panchangum · M.Sc. Econometrics · Summer Semester 2026.
