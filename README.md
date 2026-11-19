@@ -1,4 +1,4 @@
-# Forecasting U.S. Industrial Production Growth
+# Forecasting U.S. Industrial Production Growth with Elastic Net and Financial Indicators
 
 **Elastic Net forecasting with FRED-MD, daily S&P 500 returns, 10-year U.S. Treasury yields, and financial interaction terms.**
 
