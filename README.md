@@ -64,7 +64,6 @@ The script defaults to `FORECAST_END_DATE=2026-06-30` to reflect the reported st
 
 ![Variable selection frequency](Figures/variable_selection_frequency.png)
 
-![Reported point-forecast results](Figures/forecast_results.png)
 
 ## Results provenance
 
